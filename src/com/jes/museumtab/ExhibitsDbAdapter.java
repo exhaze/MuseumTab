@@ -8,21 +8,27 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class ExhibitsDbAdapter {
+	public static final String KEY_UNIQUEID = "uniqueId";
 	public static final String KEY_NAME = "name";
 	public static final String KEY_DESCRIPTION = "description";
-	public static final String KEY_IMAGE_PATH = "image_path";
+	public static final String KEY_IMAGE_STRING = "image_string";
 	public static final String KEY_ROWID = "_id";
 	
 	private static final String LOG_TAG = "ExhibitsDbAdapter";
+	private DatabaseHelper mDbHelper;
+	private SQLiteDatabase mDb;
 	
 	// SQL statement to create our database
 	private static final String DATABASE_CREATE =
 			"create table exhibits (_id integer primary key autoincrement, "
+			+ "uniqueId text not null" 
 			+ "name text not null, description text not null, image_path text);";
 	
 	private static final String DATABASE_NAME = "data";
 	private static final String DATABASE_TABLE = "exhibits";
 	private static final int DATABASE_VERSION = 1;
+	
+	private final Context mCtx;
 	
 	private static class DatabaseHelper extends SQLiteOpenHelper {
 		
@@ -41,20 +47,50 @@ public class ExhibitsDbAdapter {
 			onCreate(db);
 		}
 	}
-	
-	
-	private int mId;
-	private String mName;
-	private String mDescription;
-	private String mImagePath;
-	
-	// how do we pull an image in? from a file?
-	public ExhibitsDbAdapter(int id, String name, String desc, String imagePath) {
-		mId = id;
-		mName = name;
-		mDescription = desc;
-		mImagePath = imagePath;
+		
+	public ExhibitsDbAdapter(Context ctx) {
+		this.mCtx = ctx;
 	}
+	
+    /**
+     * Open the notes database. If it cannot be opened, try to create a new
+     * instance of the database. If it cannot be created, throw an exception to
+     * signal the failure
+     * 
+     * @return this (self reference, allowing this to be chained in an
+     *         initialization call)
+     * @throws SQLException if the database could be neither opened or created
+     */
+	public ExhibitsDbAdapter open() throws SQLException {
+		mDbHelper = new DatabaseHelper(mCtx);
+		mDb = mDbHelper.getWritableDatabase();
+		return this;
+	}
+	
+	public void close() {
+		mDbHelper.close();
+	}
+	
+	public Cursor fetchAllExhibits () {
+		return mDb.query(DATABASE_TABLE, new String[] {
+				KEY_UNIQUEID, KEY_NAME, KEY_IMAGE_STRING}, 
+				null, null, null, null, null );
+	}
+	
+	public Cursor fetchExhibit(long rowId) throws SQLException {
+		Cursor cursor =	
+			mDb.query(true, DATABASE_TABLE, new String[] {
+					KEY_UNIQUEID, KEY_NAME, KEY_IMAGE_STRING}, 
+					KEY_ROWID + "=" + rowId, null, null, null, null, null);
+		
+		if (cursor != null) {
+			cursor.moveToFirst();
+		}
+		
+		return cursor;
+	}
+	
+	// todo: add retrieval of exhibit based on QR code
 	
 	// TODO: decide how to abstract storage of images, some options
 	// option 1). make Exhibit a base class with android app/server having their 
