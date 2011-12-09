@@ -40,7 +40,7 @@ public class ExhibitsDbAdapter {
 	
 	private static final String IMAGE_TABLE_CREATE =
 			"create table " + IMAGE_TABLE
-			+ KEY_EXHIBIT_ROWID + " integer primary key autoincrement, "
+			+ "(" + KEY_EXHIBIT_ROWID + " integer primary key autoincrement, "
 			+ KEY_IMAGE_PATH + " text not null unique, "
 			+ KEY_IMAGE_EXHIBIT_BACKREF + " text not null unique);";
 	
@@ -115,7 +115,7 @@ public class ExhibitsDbAdapter {
 	
 	public Cursor fetchAllExhibits () {
 		return mDb.query(EXHIBIT_TABLE, new String[] {
-				KEY_EXHIBIT_UUID,
+				KEY_EXHIBIT_ROWID, KEY_EXHIBIT_UUID,
 				KEY_EXHIBIT_NAME, KEY_EXHIBIT_DESCRIPTION}, 
 				null, null, null, null, null );
 	}
@@ -123,6 +123,7 @@ public class ExhibitsDbAdapter {
 	public Cursor fetchExhibit(long rowId) throws SQLException {
 		Cursor cursor =	
 			mDb.query(true, EXHIBIT_TABLE, new String[] {
+					KEY_EXHIBIT_ROWID,
 					KEY_EXHIBIT_UUID, 
 					KEY_EXHIBIT_NAME, 
 					KEY_EXHIBIT_DESCRIPTION}, 
@@ -160,7 +161,9 @@ public class ExhibitsDbAdapter {
 	
 	public Cursor fetchImagesForExhibit(String uuid) throws SQLException {
 		Cursor mCursor =
-				mDb.query(true, IMAGE_TABLE, new String [] {KEY_IMAGE_PATH},
+				mDb.query(true, IMAGE_TABLE, new String [] {
+						KEY_IMAGE_ROWID,
+						KEY_IMAGE_PATH},
 						KEY_IMAGE_EXHIBIT_BACKREF + "=" + uuid, null,
 						null, null, null, null);
 		

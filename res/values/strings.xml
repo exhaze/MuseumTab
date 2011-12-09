@@ -2,4 +2,5 @@
 <resources>
     <string name="hello">Hello World, MuseumTabActivity!</string>
     <string name="app_name">MuseumTab</string>
+    <string name="no_exhibits">No exhibits</string>
 </resources>
