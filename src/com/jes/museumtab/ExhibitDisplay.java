@@ -2,6 +2,8 @@ package com.jes.museumtab;
 
 import android.app.Activity;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -60,8 +62,24 @@ public class ExhibitDisplay extends Activity {
 			int descCol = exhibit.getColumnIndexOrThrow(
 					ExhibitsDbAdapter.KEY_EXHIBIT_DESCRIPTION);
 			
+			int uuidCol = exhibit.getColumnIndexOrThrow(
+					ExhibitsDbAdapter.KEY_EXHIBIT_UUID);
+			
+			Cursor image = mDbHelper.fetchImagesForExhibit(
+					exhibit.getString(uuidCol));
+			
 			mExhibitName.setText(exhibit.getString(nameCol));
 			mExhibitDescription.setText(exhibit.getString(descCol));
+			
+			if (image.getCount() > 0) {
+				int pathCol = image.getColumnIndexOrThrow(
+						ExhibitsDbAdapter.KEY_IMAGE_PATH);
+				
+				Bitmap bMap = BitmapFactory.decodeFile(
+						image.getString(pathCol));
+				
+				mExhibitImage.setImageBitmap(bMap);
+			}
 		}
 	}
 

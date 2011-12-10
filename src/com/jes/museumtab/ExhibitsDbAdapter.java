@@ -18,11 +18,16 @@ public class ExhibitsDbAdapter {
 	public static final String KEY_IMAGE_PATH = "imagePath";
 	public static final String KEY_IMAGE_EXHIBIT_BACKREF = "exhibitBackRef";
 	public static final String KEY_IMAGE_ROWID = "_id";
+	
+	public static final String KEY_MISC_KEY = "key";
+	public static final String KEY_MISC_VALUE = "value";
+	public static final String KEY_MISC_ROWID = "_id";
 		
 	private static final String LOG_TAG = "ExhibitsDbAdapter";
 	
 	private static final String EXHIBIT_TABLE = "exhibits";
 	private static final String IMAGE_TABLE = "images";
+	private static final String MISC_TABLE = "misc";
 	
 	public static final int DATABASE_VERSION = 1;
 	public static final String DATABASE_NAME = "data";
@@ -44,6 +49,12 @@ public class ExhibitsDbAdapter {
 			+ KEY_IMAGE_PATH + " text not null unique, "
 			+ KEY_IMAGE_EXHIBIT_BACKREF + " text not null unique);";
 	
+	private static final String MISC_TABLE_CREATE =
+			"create table " + MISC_TABLE
+			+ "(" + KEY_MISC_ROWID + " integer primary key autoincrement, "
+			+ KEY_MISC_KEY + " text not null unique, "
+			+ KEY_MISC_VALUE + " text not null);";
+	
 	private final Context mCtx;
 	
 	private static class DatabaseHelper extends SQLiteOpenHelper {
@@ -56,6 +67,7 @@ public class ExhibitsDbAdapter {
 		public void onCreate(SQLiteDatabase db) {
 			db.execSQL(EXHIBIT_TABLE_CREATE);
 			db.execSQL(IMAGE_TABLE_CREATE);
+			db.execSQL(MISC_TABLE_CREATE);
 		}
 		
 		public void onUpgrade(SQLiteDatabase db, 
@@ -65,6 +77,7 @@ public class ExhibitsDbAdapter {
 					", which will destroy all old data");
 			db.execSQL("DROP TABLE IF EXISTS " + EXHIBIT_TABLE);
 			db.execSQL("DROP TABLE IF EXISTS " + IMAGE_TABLE);
+			db.execSQL("DROP TABLE IF EXISTS " + MISC_TABLE);
 			onCreate(db);
 		}
 	}
@@ -117,7 +130,7 @@ public class ExhibitsDbAdapter {
 		return mDb.delete(
 				EXHIBIT_TABLE, KEY_EXHIBIT_ROWID + "=" + rowId, null) > 0 &&
 				mDb.delete(IMAGE_TABLE, 
-						KEY_IMAGE_EXHIBIT_BACKREF + "=\"" + uuid + "\"", null) > 0;
+						KEY_IMAGE_EXHIBIT_BACKREF + sanitizedUuid(uuid), null) > 0;
 	}
 	
 	public Cursor fetchAllExhibits () {
@@ -171,12 +184,44 @@ public class ExhibitsDbAdapter {
 				mDb.query(true, IMAGE_TABLE, new String [] {
 						KEY_IMAGE_ROWID,
 						KEY_IMAGE_PATH},
-						KEY_IMAGE_EXHIBIT_BACKREF + "=" + uuid, null,
-						null, null, null, null);
+						KEY_IMAGE_EXHIBIT_BACKREF + "=" + sanitizedUuid(uuid), 
+						null, null, null, null, null);
 		
 		if (mCursor != null) mCursor.moveToFirst();
 		
 		return mCursor;
+	}
+	
+	public String sanitizedUuid(String uuid) {
+		return "\"" + uuid + "\"";
+	}
+	
+	public String getMiscValue(String key) {
+		Cursor cursor = 
+				mDb.query(true, MISC_TABLE, new String[] {
+						KEY_MISC_ROWID,
+						KEY_MISC_VALUE}, 
+						KEY_MISC_KEY + "=" + key, 
+						null, null, null, null, null);
+		
+		String result = new String();
+		
+		if (cursor.getCount() > 0) {
+			result = cursor.getString(
+					cursor.getColumnIndexOrThrow(KEY_MISC_VALUE));
+		}
+		
+		return result;
+	}
+	
+	public void setMiscValue(String key, String value) {
+		if (key.isEmpty() || value.isEmpty()) return;
+		
+		ContentValues values = new ContentValues();
+		values.put(KEY_MISC_KEY, key);
+		values.put(KEY_MISC_VALUE, value);
+		
+		mDb.insert(MISC_TABLE, null, values);
 	}
 	
 	
