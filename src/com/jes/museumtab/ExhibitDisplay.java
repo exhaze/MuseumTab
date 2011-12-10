@@ -37,8 +37,25 @@ public class ExhibitDisplay extends Activity {
        
         if (mRowId == null) {
         	Bundle extras = getIntent().getExtras();
-        	mRowId = extras != null ? 
-        			extras.getLong(ExhibitsDbAdapter.KEY_EXHIBIT_ROWID) : null;
+        	
+        	if (extras != null) {
+        		if (extras.containsKey(ExhibitsDbAdapter.KEY_EXHIBIT_ROWID)) {
+        			mRowId = extras.getLong(
+        					ExhibitsDbAdapter.KEY_EXHIBIT_ROWID);
+        		}
+        		else if (extras.containsKey(
+        				ExhibitsDbAdapter.KEY_EXHIBIT_UUID)) {
+        			
+        			Cursor cursor = mDbHelper.fetchExhibit(
+        					extras.getString(
+        							ExhibitsDbAdapter.KEY_EXHIBIT_UUID));
+        			
+        			if (cursor != null && cursor.getCount() > 0) {
+        				mRowId = cursor.getLong(cursor.getColumnIndexOrThrow(
+        						ExhibitsDbAdapter.KEY_EXHIBIT_ROWID));
+        			}
+        		}
+        	}
         }
         
         populateFields();

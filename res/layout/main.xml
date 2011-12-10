@@ -5,20 +5,20 @@
     android:orientation="vertical" >
 
     <ImageView
-        android:id="@+id/museumImage"
+        android:id="@+id/museum_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.37"
         android:src="@drawable/icon" />
 
     <Button
-        android:id="@+id/scanBtn"
+        android:id="@+id/scan_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/scan_btn_text" />
 
     <Button
-        android:id="@+id/goToExhibitListBtn"
+        android:id="@+id/exhibit_list_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/goto_exhibit_list_btn" />

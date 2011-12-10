@@ -14,10 +14,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 
 public class ExhibitList extends ListActivity {
-	
-	private static final int ACTIVITY_CREATE = 0;
-	private static final int ACTIVITY_DISPLAY = 1;
-	
+		
 	private static final int INSERT_ID = Menu.FIRST;
 	private static final int DELETE_ID = Menu.FIRST + 1;
 	
@@ -112,20 +109,6 @@ public class ExhibitList extends ListActivity {
 		super.onListItemClick(l, v, position, id);
 		Intent i = new Intent(this, ExhibitDisplay.class);
 		i.putExtra(ExhibitsDbAdapter.KEY_EXHIBIT_ROWID, id);
-		startActivityForResult(i, ACTIVITY_DISPLAY);
+		startActivity(i);
 	}
-
-	@SuppressWarnings("unused")
-	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		super.onActivityResult(requestCode, resultCode, intent);
-    	   if (requestCode == 0) {
-    	      if (resultCode == RESULT_OK) {
-    	         String contents = intent.getStringExtra("SCAN_RESULT");
-    	         String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
-    	         // Handle successful scan
-    	      } else if (resultCode == RESULT_CANCELED) {
-    	         // Handle cancel
-    	      }
-    	   }
-    	}
 }

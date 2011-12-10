@@ -29,7 +29,7 @@ public class ExhibitsDbAdapter {
 	private static final String IMAGE_TABLE = "images";
 	private static final String MISC_TABLE = "misc";
 	
-	public static final int DATABASE_VERSION = 1;
+	public static final int DATABASE_VERSION = 12;
 	public static final String DATABASE_NAME = "data";
 	
 	private DatabaseHelper mDbHelper;
@@ -157,6 +157,19 @@ public class ExhibitsDbAdapter {
 		return cursor;
 	}
 	
+	public Cursor fetchExhibit(String uuid) throws SQLException {
+		Cursor cursor =
+				mDb.query(true, EXHIBIT_TABLE, null,
+						KEY_EXHIBIT_UUID + "=" + sanitizedUuid(uuid),
+						null, null, null, null, null);
+		
+		if (cursor != null) {
+			cursor.moveToFirst();
+		}
+		
+		return cursor;
+	}
+	
 	public boolean updateExhibit(long rowId, String name, String description) {
         ContentValues args = new ContentValues();
         args.put(KEY_EXHIBIT_NAME, name);
@@ -201,7 +214,7 @@ public class ExhibitsDbAdapter {
 				mDb.query(true, MISC_TABLE, new String[] {
 						KEY_MISC_ROWID,
 						KEY_MISC_VALUE}, 
-						KEY_MISC_KEY + "=" + key, 
+						KEY_MISC_KEY + "=" + sanitizedUuid(key), 
 						null, null, null, null, null);
 		
 		String result = new String();
