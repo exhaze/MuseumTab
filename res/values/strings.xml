@@ -3,4 +3,7 @@
     <string name="hello">Hello World, MuseumTabActivity!</string>
     <string name="app_name">MuseumTab</string>
     <string name="no_exhibits">No exhibits</string>
+    <string name="menu_insert">Add Exhibit</string>
+    <string name="menu_delete">Delete Exhibit</string>
+    <string name="back_to_exhibit_list">Back to exhibit list</string>
 </resources>

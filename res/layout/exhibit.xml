@@ -4,8 +4,38 @@
   android:orientation="vertical"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
-    <ImageView android:src="@drawable/icon" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:id="@+id/image" android:clickable="true"></ImageView>
-    <TextView android:text="TextView" android:layout_height="0dp" android:textAppearance="?android:attr/textAppearanceMedium" android:layout_width="match_parent" android:layout_weight="2" android:id="@+id/description"></TextView>
-    <RatingBar android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_gravity="center_horizontal" android:id="@+id/rating"></RatingBar>
-    
+
+    <TextView
+        android:id="@+id/exhibit_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.12"
+        android:text="Exhibit Name" 
+        android:gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+       />
+
+    <ImageView
+        android:id="@+id/exhibit_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.45"
+        android:src="@drawable/icon" />
+
+    <TextView
+        android:id="@+id/exhibit_desc"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:text="Exhibit Description"
+        >
+</TextView>
+
+    <Button
+        android:id="@+id/back_to_exhibit_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.12"
+        android:text="@string/back_to_exhibit_list" />
+
 </LinearLayout>

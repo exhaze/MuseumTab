@@ -4,12 +4,24 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
 public class MuseumTabActivity extends ListActivity {
 	
-	private ExhibitsDbAdapter mDbHelper;
+	private static final int ACTIVITY_CREATE = 0;
+	private static final int ACTIVITY_DISPLAY = 1;
 	
+	private static final int INSERT_ID = Menu.FIRST;
+	private static final int DELETE_ID = Menu.FIRST + 1;
+	
+	private ExhibitsDbAdapter mDbHelper;
 	
     /** Called when the activity is first created. */
     @Override
@@ -19,7 +31,10 @@ public class MuseumTabActivity extends ListActivity {
         
         mDbHelper = new ExhibitsDbAdapter(this);
         mDbHelper.open();
+        mDbHelper.createDefaults();
         fillData();
+        
+        registerForContextMenu(getListView());
         
         // example code showing how to open file in private subdir
 //        try {
@@ -65,9 +80,60 @@ public class MuseumTabActivity extends ListActivity {
     	
     	setListAdapter(exhibits);
 	}
+    
+    @Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		menu.add(0, INSERT_ID, 0, R.string.menu_insert);
+		return true;
+	}
+    
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+    	switch (item.getItemId()) {
+    	case INSERT_ID:
+    		createExhibit();
+    		return true;
+    	}
+    	
+    	return super.onMenuItemSelected(featureId, item);
+    }
+
+    @Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add(0, DELETE_ID, 0, R.string.menu_delete);
+	}
+    
+    @Override
+	public boolean onContextItemSelected(MenuItem item) {
+		switch(item.getItemId()) {
+    	case DELETE_ID:
+    		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+	        mDbHelper.deleteExhibit(info.id);
+	        fillData();
+	        return true;
+		}
+		return super.onContextItemSelected(item);
+	}
+    
+	private void createExhibit() {
+		Intent i = new Intent(this, ExhibitEditor.class);
+		startActivityForResult(i, ACTIVITY_CREATE);
+	}
+
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+		Intent i = new Intent(this, ExhibitDisplay.class);
+		i.putExtra(ExhibitsDbAdapter.KEY_EXHIBIT_ROWID, id);
+		startActivityForResult(i, ACTIVITY_DISPLAY);
+	}
 
 	@SuppressWarnings("unused")
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		super.onActivityResult(requestCode, resultCode, intent);
     	   if (requestCode == 0) {
     	      if (resultCode == RESULT_OK) {
     	         String contents = intent.getStringExtra("SCAN_RESULT");

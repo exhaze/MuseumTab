@@ -92,6 +92,13 @@ public class ExhibitsDbAdapter {
 		mDbHelper.close();
 	}
 	
+	public void createDefaults() {
+		Cursor cursor = fetchAllExhibits();
+		if (cursor.getCount() == 0) {
+			createExhibit("Mona Lisa", "A painting by Leonardo Da Vinci");
+		}
+	}
+	
 	public long createExhibit(String name, String description) {
 		ContentValues initialValues = new ContentValues();
 		initialValues.put(KEY_EXHIBIT_NAME, name);
@@ -110,7 +117,7 @@ public class ExhibitsDbAdapter {
 		return mDb.delete(
 				EXHIBIT_TABLE, KEY_EXHIBIT_ROWID + "=" + rowId, null) > 0 &&
 				mDb.delete(IMAGE_TABLE, 
-						KEY_IMAGE_EXHIBIT_BACKREF + "=" + uuid, null) > 0;
+						KEY_IMAGE_EXHIBIT_BACKREF + "=\"" + uuid + "\"", null) > 0;
 	}
 	
 	public Cursor fetchAllExhibits () {
