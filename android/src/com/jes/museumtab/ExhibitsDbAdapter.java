@@ -219,10 +219,12 @@ public class ExhibitsDbAdapter {
 		
 		String result = new String();
 		
-		if (cursor.getCount() > 0) {
+		if (cursor.moveToFirst()) {
 			result = cursor.getString(
 					cursor.getColumnIndexOrThrow(KEY_MISC_VALUE));
 		}
+		
+		cursor.close();
 		
 		return result;
 	}

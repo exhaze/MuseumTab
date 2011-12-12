@@ -15,12 +15,21 @@
         android:id="@+id/scan_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/scan_btn_text" />
+        android:text="@string/scan_btn_text"
+        android:textSize="40dp" />
 
     <Button
         android:id="@+id/exhibit_list_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/goto_exhibit_list_btn" />
+        android:text="@string/goto_exhibit_list_btn" 
+        android:textSize="40dp" />
+
+    <Button
+        android:id="@+id/update_from_server_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/update_from_server_btn"
+        android:textSize="40dp" />
 
 </LinearLayout>
