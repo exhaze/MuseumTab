@@ -7,7 +7,8 @@
     <string name="menu_delete">Delete Exhibit</string>
     <string name="back_to_exhibit_list">Back to exhibit list</string>
     <string name="welcome">Welcome to this museum! Please scan an exhibit barcode or open the list of all exhibits</string>
-    <string name="scan_btn_text">Scan an exhibit barcode</string>
-    <string name="goto_exhibit_list_btn">Go to exhibit list</string>
+    <string name="scan_btn_text">Scan Exhibit</string>
+    <string name="goto_exhibit_list_btn">Exhibit List</string>
+    <string name="current_exhibit">Current Exhibit</string>
     <string name="update_from_server_btn">Update from server</string>
 </resources>
