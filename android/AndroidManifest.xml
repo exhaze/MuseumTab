@@ -12,6 +12,8 @@
                   android:label="@string/app_name">
         </activity>
         <activity android:name=".ExhibitDisplay"/>
+        <activity android:name="ScanQrCodeActivity"/>
+
         <activity android:name="MuseumTab">
 			<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
