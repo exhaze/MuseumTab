@@ -17,6 +17,8 @@ public class BackendSyncer extends Activity {
 	private Handler mHandler;
 	private ExhibitsDbAdapter mDbHelper;
 	
+	private static String UPDATE_URL = "http://museumtab.appspot.com/update/";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -31,7 +33,7 @@ public class BackendSyncer extends Activity {
 		@Override
 		public void run() {
 			try {
-				URL updateURL = new URL("http://museumtab.appspot.com/update/" + mDbHelper.getMiscValue(MuseumTab.APP_UNIQUE_ID));
+				URL updateURL = new URL(UPDATE_URL + mDbHelper.getMiscValue(MuseumTab.APP_UNIQUE_ID));
 				URLConnection conn = updateURL.openConnection();
 				BufferedInputStream is = new BufferedInputStream(conn.getInputStream());
 				ByteArrayBuffer baf = new ByteArrayBuffer(50);
