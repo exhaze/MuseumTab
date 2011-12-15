@@ -20,6 +20,7 @@ public class MuseumTab extends Activity {
 	
 	private Button mScanBtn;
 	private Button mExhibitListBtn;
+	private Button mUpdateBtn;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public class MuseumTab extends Activity {
 		
 		mScanBtn = (Button) findViewById(R.id.scan_btn);
 		mExhibitListBtn = (Button) findViewById(R.id.exhibit_list_btn);
+		mUpdateBtn = (Button) findViewById(R.id.get_update_btn);
 		
 		mScanBtn.setOnClickListener(new View.OnClickListener() {
 			
@@ -59,6 +61,15 @@ public class MuseumTab extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(MuseumTab.this, ExhibitList.class);
+				startActivity(intent);
+			}
+		});
+		
+		mUpdateBtn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MuseumTab.this, BackendSyncer.class);
 				startActivity(intent);
 			}
 		});

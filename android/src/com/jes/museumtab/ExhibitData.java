@@ -1,21 +1,22 @@
 package com.jes.museumtab;
 
-import com.google.gson.Gson;
+import java.util.UUID;
 
 public class ExhibitData {
+	private Long mId;
+	
 	private String mUuid;
 	private String mName;
 	private String mDescription;
 	
-	public static ExhibitData fromJson(String jsonData) {
-		Gson gson = new Gson();
-		return gson.fromJson(jsonData, ExhibitData.class);
-	}
-	
-	public ExhibitData(String uuid, String name, String desc) {
-		mUuid = uuid;
+	public ExhibitData(String name, String desc) {
+		mUuid = UUID.randomUUID().toString();
 		mName = name;
 		mDescription = desc;
+	}
+	
+	public Long getId() {
+		return mId;
 	}
 	
 	public String getUuid() {
@@ -28,11 +29,5 @@ public class ExhibitData {
 
 	public String getDescription() {
 		return mDescription;
-	}
-
-	String toJson()
-	{
-		Gson gson = new Gson();
-		return gson.toJson(this);
 	}
 }

@@ -10,4 +10,5 @@
     <string name="update_from_server_btn">Update from server</string>
     <string name="scan_btn_text">Scan an exhibit barcode</string>
     <string name="goto_exhibit_list_btn">Go to exhibit list</string>
+    <string name="get_update_btn">Get update from server</string>
 </resources>

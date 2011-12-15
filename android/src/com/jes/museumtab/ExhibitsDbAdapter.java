@@ -121,6 +121,15 @@ public class ExhibitsDbAdapter {
 		return mDb.insert(EXHIBIT_TABLE, null, initialValues);
 	}
 	
+	public long createExhibit(String uuid, String name, String description) {
+		ContentValues initialValues = new ContentValues();
+		initialValues.put(KEY_EXHIBIT_NAME, name);
+		initialValues.put(KEY_EXHIBIT_DESCRIPTION, description);
+		initialValues.put(KEY_EXHIBIT_UUID, uuid);
+		
+		return mDb.insert(EXHIBIT_TABLE, null, initialValues);		
+	}
+	
 	public boolean deleteExhibit(long rowId) {
 		Cursor cursor = fetchExhibit(rowId);
 		
@@ -178,6 +187,11 @@ public class ExhibitsDbAdapter {
         return mDb.update(EXHIBIT_TABLE, args, 
         		KEY_EXHIBIT_ROWID + "=" + rowId, null) > 0;
 		
+	}
+	
+	public void clearExhibits() {
+		mDb.execSQL("DROP TABLE IF EXISTS " + EXHIBIT_TABLE);
+		mDb.execSQL(EXHIBIT_TABLE_CREATE);
 	}
 	
 	public long createImage(String imagePath, String exhibitBackref) {
@@ -238,55 +252,7 @@ public class ExhibitsDbAdapter {
 		
 		mDb.insert(MISC_TABLE, null, values);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	// todo: add retrieval of exhibit based on QR code
-	
+		
 	// TODO: decide how to abstract storage of images, some options
 	// option 1). make Exhibit a base class with android app/server having their 
 	// 			  own implementations
