@@ -3,11 +3,11 @@
       package="com.jes.museumtab"
       android:versionCode="1"
       android:versionName="1.0">
-    <uses-sdk android:minSdkVersion="10" />
+    <uses-sdk android:minSdkVersion="8" />
     <uses-permission android:name="android.permission.SET_DEBUG_APP"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/> 
-    <application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="true">
+    <application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="true" android:theme="@style/CustomTheme">
         <activity android:name=".ExhibitList"/>
         <activity android:name=".ExhibitDisplay"/>
         <activity android:name=".BackendSyncer"/>
