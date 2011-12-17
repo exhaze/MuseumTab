@@ -1,4 +1,6 @@
 package com.jes.museumtab;
+import java.util.UUID;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -6,7 +8,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import java.util.UUID;
 
 public class ExhibitsDbAdapter {
 	
@@ -244,7 +245,7 @@ public class ExhibitsDbAdapter {
 	}
 	
 	public void setMiscValue(String key, String value) {
-		if (key.isEmpty() || value.isEmpty()) return;
+		if (key.length() == 0 || value.length() == 0) return;
 		
 		ContentValues values = new ContentValues();
 		values.put(KEY_MISC_KEY, key);

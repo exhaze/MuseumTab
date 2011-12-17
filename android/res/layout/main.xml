@@ -16,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/scan_btn_text" />
+        
 
     <Button
         android:id="@+id/exhibit_list_btn"

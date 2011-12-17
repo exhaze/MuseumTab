@@ -31,14 +31,14 @@ public class MuseumTab extends Activity {
 		mDbHelper.open();
 
 		// create a unique ID for an app if it doesn't have one
-		if (mDbHelper.getMiscValue(APP_UNIQUE_ID).isEmpty())
+		if (mDbHelper.getMiscValue(APP_UNIQUE_ID).length() == 0)
 		{
 			mDbHelper.setMiscValue(APP_UNIQUE_ID, UUID.randomUUID().toString());
 		}
 
 		String museumImgPath = mDbHelper.getMiscValue(MUSEUM_IMAGE);
 		
-		if (!museumImgPath.isEmpty()) {
+		if (!(museumImgPath.length() == 0)) {
 			Bitmap bMap = BitmapFactory.decodeFile(museumImgPath);
 			ImageView museumView = (ImageView) findViewById(R.id.museum_image);
 			museumView.setImageBitmap(bMap);
